@@ -20,7 +20,7 @@
                         <i class="bi bi-info-circle me-2"></i>
                         Descoperă mai multe
                     </a>
-                    <a href="#" class="action-btn secondary-btn mb-3">
+                    <a href="https://t.me/+Cy42hiMBQRZlMDIy" class="action-btn secondary-btn mb-3">
                         <i class="bi bi-telegram me-2"></i>
                         Alătură-te pe Telegram
                     </a>

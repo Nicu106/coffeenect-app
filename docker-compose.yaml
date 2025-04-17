@@ -1,0 +1,85 @@
+services:
+  caddy:
+    restart: unless-stopped
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    labels:
+      caddy.email: coffeenect-app@mailinator.com
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/storage/caddy_data:/data-b
+    depends_on:
+      - nginx-laravel
+      - phpmyadmin
+    environment:
+      - CADDY_INGRESS_NETWORKS=connect_caddy
+    networks:
+      - caddy
+
+  nginx-laravel:
+    build:
+      context: .
+      dockerfile: ./docker/build/nginx-laravel/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/laravel/
+    labels:
+      caddy: ${DOMAIN_APP}
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.tls: "internal"
+    depends_on:
+      - php-laravel
+    networks:
+      - caddy
+      - docker_intern
+
+  php-laravel:
+    build:
+      context: .
+      dockerfile: docker/build/php8.2/Dockerfile
+    restart: unless-stopped
+#    command: sleep 1000
+
+    volumes:
+      - ./:/var/www/laravel/
+    networks:
+      - docker_intern
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: fpm
+
+  db-coffeenect-app:
+    container_name: coffeenect-app-db
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/storage/mysql/data-d:/var/lib/mysql
+      - ./docker/config/mysql:/etc/mysql/conf.d
+    networks:
+      - docker_intern
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=db-coffeenect-app
+      - UPLOAD_LIMIT=200M
+    labels:
+      caddy: ${DOMAIN_PMA}
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.tls: "internal"
+    depends_on:
+      - db-coffeenect-app
+    networks:
+      - caddy
+      - docker_intern
+
+networks:
+  caddy:
+    name: connect_caddy
+  docker_intern:
+    name: ${APP_NAME}_docker_intern

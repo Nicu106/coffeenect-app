@@ -370,7 +370,7 @@
                     <a class="nav-link" href="{{route('contacts')}}">Contact</a>
                 </li>
             </ul>
-            <a href="#" class="telegram-btn ms-3">
+            <a href="https://t.me/+Cy42hiMBQRZlMDIy" class="telegram-btn ms-3">
                 <i class="bi bi-telegram"></i>
                 Telegram
             </a>
