@@ -130,5 +130,23 @@
         margin: 0 auto;
         text-align: center;
     }
+
+    @media (max-width: 1200px) {
+        .futurist-text {
+            font-size: 10rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .futurist-text {
+            font-size: 6rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .futurist-text {
+            font-size: 3.5rem;
+        }
+    }
 </style>
 @endsection

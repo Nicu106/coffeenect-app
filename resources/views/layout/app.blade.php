@@ -367,7 +367,7 @@
                     <a class="nav-link" href="{{route('participate')}}">Alătură-te</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('contacts')}}">Contact</a>
+                    <a class="nav-link" href="{{route('about')}}">About</a>
                 </li>
             </ul>
             <a href="https://t.me/+Cy42hiMBQRZlMDIy" class="telegram-btn ms-3">
